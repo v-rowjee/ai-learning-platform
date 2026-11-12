@@ -1,0 +1,93 @@
+title: AI API Integration Fundamentals
+level: Beginner
+modules:
+  - title: Connect to an AI model
+    lectures:
+      - title: Understanding AI providers
+      - title: Your first Groq API request
+      - title: Making requests with HTTP
+  - title: Integrate AI into applications
+    lectures:
+      - title: Create a reusable Python function
+      - title: Call an AI API from TypeScript
+      - title: Build a Next.js API route
+  - title: Control AI responses
+    lectures:
+      - title: System instructions
+      - title: Generate JSON
+      - title: Validate AI responses with Zod
+  - title: Rate limits and provider routing
+    lectures:
+      - title: Handle API errors
+      - title: Implement retry with backoff
+      - title: Use FreeLLMAPI and 9Router
+  - title: Build a real AI feature
+    lectures:
+      - title: Create the user interface
+      - title: Connect the AI backend
+      - title: "Final project: AI Text Analysis Studio"
+
+
+title: Retrieval-Augmented Generation (RAG)
+level: Intermediate
+modules:
+  - title: Introduction to RAG
+    lectures:
+      - title: What is RAG and why use it?
+      - title: Build your first RAG pipeline
+      - title: Understand the retrieval and generation workflow
+
+  - title: Prepare documents for RAG
+    lectures:
+      - title: Load text, PDF and Markdown documents
+      - title: Split documents into chunks
+      - title: Add metadata and source references
+
+  - title: Embeddings and semantic search
+    lectures:
+      - title: Generate embeddings with Sentence Transformers
+      - title: Build a semantic search function
+      - title: Find relevant documents using cosine similarity
+
+  - title: Vector databases and retrieval
+    lectures:
+      - title: Store embeddings using ChromaDB
+      - title: Retrieve relevant chunks from a vector database
+      - title: Improve retrieval with similarity thresholds and top-k
+
+  - title: Connect retrieval to an LLM
+    lectures:
+      - title: Build a RAG pipeline using Python and Groq
+      - title: Generate answers using retrieved context
+      - title: Add source citations and handle unanswered questions
+
+  - title: Build a RAG application
+    lectures:
+      - title: Create a FastAPI endpoint for document Q&A
+      - title: Connect a Next.js chat interface to the RAG backend
+      - title: "Final project: Chat with Your Documents"
+
+
+
+title: Building Tabular RAG Applications
+level: advanced
+modules:
+  - title: Introduction to Tabular RAG
+    lectures:
+      - title: Understanding Tabular RAG and its architecture
+      - title: Loading and exploring CSV, Excel and SQL data
+      - title: Understanding table schemas and preparing context
+
+  - title: Text-to-Pandas and Text-to-SQL
+    lectures:
+      - title: Convert natural language into Pandas operations
+      - title: Build a Text-to-Pandas pipeline with PandasAI
+      - title: Generate SQL queries from natural language using LLMs
+      - title: Validate and execute SQL using SQLGlot and DuckDB
+
+  - title: Advanced Tabular RAG and AI Data Analysis
+    lectures:
+      - title: Build schema-aware retrieval for multiple tables
+      - title: Generate grounded insights and visualisations
+      - title: "Final project: AI Data Analyst with Text-to-SQL and Text-to-Pandas"
+

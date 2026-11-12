@@ -15,6 +15,11 @@ const nav = [
   { href: "/playground", label: "AI playground", icon: Code2, disabled: true },
 ];
 
+const sentenceCase = (value: string) => {
+  const normalized = value.replace(/[-_]+/g, " ").trim().toLowerCase();
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1).replace(/\bai\b/g, "AI");
+};
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
@@ -41,7 +46,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-[#f7f6f2] text-stone-950 dark:bg-[#181715] dark:text-stone-100">
-      <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-stone-200 bg-[#f7f6f2] p-4 transition-all dark:border-stone-800 dark:bg-[#181715] ${collapsed ? "w-[76px]" : "w-[248px]"} ${mobile ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
+      <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-stone-200 bg-[#f7f6f2] p-4 transition-all dark:border-stone-800 dark:bg-[#181715] ${collapsed ? "w-[76px]" : "w-[248px]"} ${mobile ? "tranneutral-x-0" : "-tranneutral-x-full md:tranneutral-x-0"}`}>
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
             <span className="grid size-8 place-items-center border border-stone-300 bg-stone-900 text-xs text-stone-50 dark:border-stone-700 dark:bg-stone-100 dark:text-stone-900">N/</span>
@@ -60,7 +65,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
       <div className={`min-h-screen transition-[margin] ${collapsed ? "md:ml-[76px]" : "md:ml-[248px]"}`}>
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-stone-200 bg-[#f7f6f2] px-4 dark:border-stone-800 dark:bg-[#181715] md:px-8">
-          <div className="flex items-center gap-3"><button onClick={() => setMobile(true)} className="rounded-md p-2 text-stone-500 hover:bg-stone-200 md:hidden dark:hover:bg-stone-800" aria-label="Open menu"><Menu size={20} /></button><span className="hidden text-sm text-stone-400 md:block">Workspace / <span className="text-stone-700 dark:text-stone-200">{pathname === "/dashboard" ? "Overview" : pathname.split("/")[1] || "home"}</span></span></div>
+          <div className="flex items-center gap-3"><button onClick={() => setMobile(true)} className="rounded-md p-2 text-stone-500 hover:bg-stone-200 md:hidden dark:hover:bg-stone-800" aria-label="Open menu"><Menu size={20} /></button><span className="hidden text-sm text-stone-400 md:block">Workspace / <span className="text-stone-700 dark:text-stone-200">{sentenceCase(pathname === "/dashboard" ? "Overview" : pathname.split("/")[1] || "home")}</span></span></div>
           <div className="flex items-center gap-3"><button onClick={() => setDark(!dark)} className="rounded-md p-2 text-stone-500 hover:bg-stone-200 dark:hover:bg-stone-800" aria-label="Toggle theme">{dark ? <Sun size={18} /> : <Moon size={18} />}</button><button onClick={() => setTutorOpen(!tutorOpen)} className="flex items-center gap-2 border border-stone-300 bg-stone-900 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-700 dark:border-stone-700 dark:bg-stone-100 dark:text-stone-900" aria-expanded={tutorOpen}><Bot size={16} /><span className="hidden sm:inline">Ask tutor</span></button><div className="grid size-8 place-items-center border border-stone-300 bg-stone-200 text-[10px] font-bold text-stone-700 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-200">{demoUser.avatar}</div></div>
         </header>
         <main className="mx-auto max-w-7xl p-5 md:p-8">{children}</main>

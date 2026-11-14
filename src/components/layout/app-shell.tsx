@@ -32,9 +32,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [draft, setDraft] = useState("");
   const progress = useLearningStore((state) => state.progress);
   const hydrate = useLearningStore((state) => state.hydrate);
+  const sidebarCollapsed = collapsed && !mobile;
 
   useEffect(() => { hydrate(); }, [hydrate]);
   useEffect(() => { document.documentElement.classList.toggle("dark", dark); }, [dark]);
+  useEffect(() => { setMobile(false); }, [pathname]);
 
   async function ask(text = draft) {
     if (!text.trim()) return;
@@ -46,26 +48,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-[#f7f6f2] text-stone-950 dark:bg-[#181715] dark:text-stone-100">
-      <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-stone-200 bg-[#f7f6f2] p-4 transition-all dark:border-stone-800 dark:bg-[#181715] ${collapsed ? "w-[76px]" : "w-[248px]"} ${mobile ? "tranneutral-x-0" : "-tranneutral-x-full md:tranneutral-x-0"}`}>
+      {mobile && <button type="button" aria-label="Close menu" className="fixed inset-0 z-30 bg-black/40 md:hidden" onClick={() => setMobile(false)} />}
+      <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-stone-200 bg-[#f7f6f2] p-4 transition-transform dark:border-stone-800 dark:bg-[#181715] ${sidebarCollapsed ? "w-[76px]" : "w-[248px]"} ${mobile ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
             <span className="grid size-8 place-items-center border border-stone-300 bg-stone-900 text-xs text-stone-50 dark:border-stone-700 dark:bg-stone-100 dark:text-stone-900">N/</span>
-            {!collapsed && <span>nexora<span className="text-orange-700 dark:text-orange-300">/learn</span></span>}
+            {!sidebarCollapsed && <span>nexora<span className="text-orange-700 dark:text-orange-300">/learn</span></span>}
           </Link>
           <button className="rounded-md p-2 text-stone-500 hover:bg-stone-200 md:hidden dark:hover:bg-stone-800" onClick={() => setMobile(false)} aria-label="Close menu"><X size={18} /></button>
         </div>
         <div className="mt-10 flex-1 space-y-1">
-          <p className={`mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400 ${collapsed ? "sr-only" : ""}`}>Workspace</p>
-          {nav.map(({ href, label, icon: Icon, disabled }) => disabled ? <div key={href} aria-disabled="true" className="flex cursor-not-allowed items-center gap-3 border-l-2 border-transparent px-3 py-2.5 text-sm font-medium text-stone-300 dark:text-stone-600"><Icon size={17} />{!collapsed && label}</div> : <Link key={href} href={href} onClick={() => setMobile(false)} className={`flex items-center gap-3 border-l-2 px-3 py-2.5 text-sm font-medium ${pathname.startsWith(href) ? "border-orange-600 bg-stone-200/70 text-stone-950 dark:border-orange-400 dark:bg-stone-800/70 dark:text-stone-50" : "border-transparent text-stone-500 hover:bg-stone-200/60 dark:hover:bg-stone-800"}`}><Icon size={17} />{!collapsed && label}</Link>)}
+          <p className={`mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400 ${sidebarCollapsed ? "sr-only" : ""}`}>Workspace</p>
+          {nav.map(({ href, label, icon: Icon, disabled }) => disabled ? <div key={href} aria-disabled="true" className="flex cursor-not-allowed items-center gap-3 border-l-2 border-transparent px-3 py-2.5 text-sm font-medium text-stone-300 dark:text-stone-600"><Icon size={17} />{!sidebarCollapsed && label}</div> : <Link key={href} href={href} onClick={() => setMobile(false)} className={`flex items-center gap-3 border-l-2 px-3 py-2.5 text-sm font-medium ${pathname.startsWith(href) ? "border-orange-600 bg-stone-200/70 text-stone-950 dark:border-orange-400 dark:bg-stone-800/70 dark:text-stone-50" : "border-transparent text-stone-500 hover:bg-stone-200/60 dark:hover:bg-stone-800"}`}><Icon size={17} />{!sidebarCollapsed && label}</Link>)}
           <div className="my-6 border-t border-stone-200 dark:border-stone-800" />
-          {[{ href: "/profile", label: "Profile", icon: UserRound }, { href: "/settings", label: "Settings", icon: Settings }].map(({ href, label, icon: Icon }) => <Link key={href} href={href} className="flex items-center gap-3 border-l-2 border-transparent px-3 py-2.5 text-sm font-medium text-stone-500 hover:bg-stone-200/60 dark:hover:bg-stone-800"><Icon size={17} />{!collapsed && label}</Link>)}
+          {[{ href: "/profile", label: "Profile", icon: UserRound }, { href: "/settings", label: "Settings", icon: Settings }].map(({ href, label, icon: Icon }) => <Link key={href} href={href} onClick={() => setMobile(false)} className="flex items-center gap-3 border-l-2 border-transparent px-3 py-2.5 text-sm font-medium text-stone-500 hover:bg-stone-200/60 dark:hover:bg-stone-800"><Icon size={17} />{!sidebarCollapsed && label}</Link>)}
         </div>
-        {!collapsed && <div className="border-t border-stone-200 pt-4 dark:border-stone-800"><p className="text-xs font-semibold">Weekly goal</p><div className="mt-2 h-1 bg-stone-200 dark:bg-stone-800"><div className="h-1 w-3/4 bg-orange-600 dark:bg-orange-400" /></div><p className="mt-2 text-xs text-stone-500">3 of 4 sessions</p></div>}
+        {!sidebarCollapsed && <div className="border-t border-stone-200 pt-4 dark:border-stone-800"><p className="text-xs font-semibold">Weekly goal</p><div className="mt-2 h-1 bg-stone-200 dark:bg-stone-800"><div className="h-1 w-3/4 bg-orange-600 dark:bg-orange-400" /></div><p className="mt-2 text-xs text-stone-500">3 of 4 sessions</p></div>}
         <button onClick={() => setCollapsed(!collapsed)} className="mt-3 hidden items-center justify-center rounded-md p-2 text-stone-400 hover:bg-stone-200 md:flex dark:hover:bg-stone-800" aria-label="Collapse sidebar">{collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}</button>
       </aside>
       <div className={`min-h-screen transition-[margin] ${collapsed ? "md:ml-[76px]" : "md:ml-[248px]"}`}>
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-stone-200 bg-[#f7f6f2] px-4 dark:border-stone-800 dark:bg-[#181715] md:px-8">
-          <div className="flex items-center gap-3"><button onClick={() => setMobile(true)} className="rounded-md p-2 text-stone-500 hover:bg-stone-200 md:hidden dark:hover:bg-stone-800" aria-label="Open menu"><Menu size={20} /></button><span className="hidden text-sm text-stone-400 md:block">Workspace / <span className="text-stone-700 dark:text-stone-200">{sentenceCase(pathname === "/dashboard" ? "Overview" : pathname.split("/")[1] || "home")}</span></span></div>
+          <div className="flex items-center gap-3"><button onClick={() => setMobile(true)} className="rounded-md p-2 text-stone-500 hover:bg-stone-200 md:hidden dark:hover:bg-stone-800" aria-label="Open menu" aria-expanded={mobile}><Menu size={20} /></button><span className="hidden text-sm text-stone-400 md:block">Workspace / <span className="text-stone-700 dark:text-stone-200">{sentenceCase(pathname === "/dashboard" ? "Overview" : pathname.split("/")[1] || "home")}</span></span></div>
           <div className="flex items-center gap-3"><button onClick={() => setDark(!dark)} className="rounded-md p-2 text-stone-500 hover:bg-stone-200 dark:hover:bg-stone-800" aria-label="Toggle theme">{dark ? <Sun size={18} /> : <Moon size={18} />}</button><button onClick={() => setTutorOpen(!tutorOpen)} className="flex items-center gap-2 border border-stone-300 bg-stone-900 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-700 dark:border-stone-700 dark:bg-stone-100 dark:text-stone-900" aria-expanded={tutorOpen}><Bot size={16} /><span className="hidden sm:inline">Ask tutor</span></button><div className="grid size-8 place-items-center border border-stone-300 bg-stone-200 text-[10px] font-bold text-stone-700 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-200">{demoUser.avatar}</div></div>
         </header>
         <main className="mx-auto max-w-7xl p-5 md:p-8">{children}</main>
